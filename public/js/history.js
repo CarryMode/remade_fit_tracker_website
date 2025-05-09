@@ -1,0 +1,1 @@
+// History page JS logic
