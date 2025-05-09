@@ -5,10 +5,11 @@ const dbPath = path.join(__dirname, '../db/database.sqlite');
 const db = new sqlite3.Database(dbPath);
 
 // Save a workout and its sets
-function saveWorkout({ title, notes, sets }, callback) {
+function saveWorkout({ title, notes, sets, userId }, callback) {
     db.run(
-        `INSERT INTO workouts (title, notes) VALUES (?, ?)`,
-        [title, notes],
+
+        `INSERT INTO workouts (title, notes, user_id) VALUES (?, ?, ?)`,
+        [title, notes, userId],
         function (err) {
             if (err) return callback(err);
 

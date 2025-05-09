@@ -20,27 +20,76 @@
         <a href="exercises.html">Exercises</a>
     </nav>
 
-    <section class="history-list">
-        <div class="workout-session">
-            <h4>Chest & Triceps</h4>
-            <p>Friday, May 9</p>
-            <ul>
-                <li>Bench Press: 3 sets × 10 reps @ 80kg</li>
-                <li>Skull Crushers: 3 sets × 12 reps @ 35kg</li>
-            </ul>
-        </div>
-
-        <div class="workout-session">
-            <h4>Leg Day</h4>
-            <p>Wednesday, May 7</p>
-            <ul>
-                <li>Squats: 4 sets × 8 reps @ 100kg</li>
-                <li>Leg Curls: 3 sets × 12 reps @ 40kg</li>
-            </ul>
-        </div>
+    <section class="history-list" id="history-list">
+        <!-- Workouts will load here dynamically -->
     </section>
 </div>
 
-<script src="js/history.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/workouts')
+        .then(res => {
+            if (!res.ok) throw new Error('Not logged in');
+            return res.json();
+        })
+        .then(workouts => {
+            const container = document.getElementById('history-list');
+            if (workouts.length === 0) {
+                container.innerHTML = '<p>No workouts found.</p>';
+                return;
+            }
+
+            workouts.forEach(workout => {
+                const div = document.createElement('div');
+                div.className = 'workout-session';
+
+                const title = document.createElement('h4');
+                title.textContent = workout.title;
+
+                const date = document.createElement('p');
+                date.textContent = new Date(workout.date_created).toLocaleString();
+
+                const toggle = document.createElement('button');
+                toggle.textContent = 'Show Sets';
+                toggle.onclick = () => {
+                    if (setsList.style.display === 'block') {
+                        setsList.style.display = 'none';
+                        toggle.textContent = 'Show Sets';
+                        return;
+                    }
+
+                    fetch(`/api/workouts/${workout.id}/sets`)
+                        .then(res => res.json())
+                        .then(sets => {
+                            setsList.innerHTML = '';
+                            sets.forEach(set => {
+                                const item = document.createElement('li');
+                                item.textContent = `${set.exercise} — Set ${set.set_number}: ${set.weight} kg × ${set.reps} reps`;
+                                setsList.appendChild(item);
+                            });
+                            setsList.style.display = 'block';
+                            toggle.textContent = 'Hide Sets';
+                        });
+                };
+
+                const setsList = document.createElement('ul');
+                setsList.style.display = 'none';
+
+                div.appendChild(title);
+                div.appendChild(date);
+                div.appendChild(toggle);
+                div.appendChild(setsList);
+
+                container.appendChild(div);
+            });
+        })
+        .catch(err => {
+            document.getElementById('history-list').innerHTML =
+                '<p>Please <a href="login.html">log in</a> to view your workouts.</p>';
+        });
+});
+</script>
+
+
 </body>
 </html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Fitness Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h2>Login / Register</h2>
+    </header>
+
+    <div>
+        <label>Username:</label><br>
+        <input type="text" id="username"><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" id="password"><br><br>
+
+        <button onclick="login()">Login</button>
+        <button onclick="register()">Register</button>
+    </div>
+
+    <p id="status"></p>
+</div>
+
+<script>
+function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = 'start.html';
+        } else {
+            document.getElementById('status').textContent = data.error || 'Login failed';
+        }
+    });
+}
+
+function register() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = 'start.html';
+        } else {
+            document.getElementById('status').textContent = data.error || 'Registration failed';
+        }
+    });
+}
+</script>
+</body>
+</html>
