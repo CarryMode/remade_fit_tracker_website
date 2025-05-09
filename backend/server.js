@@ -11,4 +11,4 @@ app.use(express.static(path.join(__dirname, '../public')));
 const workoutsRouter = require('./routes/workouts');
 app.use('/api/workouts', workoutsRouter);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

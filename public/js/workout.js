@@ -72,3 +72,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+
+const saveBtn = document.getElementById('save-workout');
+
+saveBtn.addEventListener('click', () => {
+    const workoutData = {
+        title: prompt("Enter workout title:", "My Workout") || "Untitled Workout",
+        notes: "",
+        sets: []
+    };
+
+    const exerciseBlocks = document.querySelectorAll('.exercise-block');
+
+    exerciseBlocks.forEach(block => {
+        const exerciseName = block.querySelector('h4').textContent;
+        const setRows = block.querySelectorAll('.set-row');
+
+        setRows.forEach((row, index) => {
+            const weightInput = row.querySelector('.set-weight');
+            const repsInput = row.querySelector('.set-reps');
+
+            if (weightInput && repsInput && weightInput.value && repsInput.value) {
+                workoutData.sets.push({
+                    exercise: exerciseName,
+                    weight: parseInt(weightInput.value),
+                    reps: parseInt(repsInput.value)
+                });
+            }
+        });
+    });
+
+    fetch('/api/workouts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(workoutData)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Workout saved!');
+        } else {
+            alert('Error saving workout.');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Server error.');
+    });
+});
