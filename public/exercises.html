@@ -6,6 +6,15 @@
     <title>Exercises | Fitness Tracker</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+<script>
+function logout() {
+    fetch('/api/logout', {
+        method: 'POST'
+    }).then(() => {
+        window.location.href = 'login.html';
+    });
+}
+</script>
 <body>
 
 <div class="container">
@@ -18,6 +27,7 @@
         <a href="history.html">History</a>
         <a href="start.html">Start Workout</a>
         <a href="exercises.html">Exercises</a>
+        <a href="#" onclick="logout()">Logout</a>
     </nav>
 
     <section class="exercises-list">

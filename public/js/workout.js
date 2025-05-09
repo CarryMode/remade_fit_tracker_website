@@ -78,8 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
 const saveBtn = document.getElementById('save-workout');
 
 saveBtn.addEventListener('click', () => {
+    const now = new Date();
+    const dateTitle = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    
     const workoutData = {
-        title: prompt("Enter workout title:", "My Workout") || "Untitled Workout",
+        title: `Workout – ${dateTitle}`,
         notes: "",
         sets: []
     };
