@@ -20,18 +20,24 @@
         <a href="exercises.html">Exercises</a>
     </nav>
 
-    <section class="quickstart-section">
-        <button id="quickstart-btn">Quick Start</button>
-    </section>
+    <section id="active-workout">
+        <div id="exercise-form">
+            <label for="exercise">Select Exercise:</label>
+            <select id="exercise">
+                <option value="Bench Press">Bench Press</option>
+                <option value="Squat">Squat</option>
+                <option value="Deadlift">Deadlift</option>
+                <option value="Cable Crossover">Cable Crossover</option>
+            </select>
+            <button id="add-exercise" class="small-button">+ Add Exercise</button>
+        </div>
 
-    <section class="templates-section">
-        <h3>Your Templates</h3>
-        <div class="template">Push Day A</div>
-        <div class="template">Pull Day B</div>
+        <div id="workout-log">
+            <!-- Exercise sets will be added here -->
+        </div>
 
-        <h3>Predefined Templates</h3>
-        <div class="template">Full Body Beginner</div>
-        <div class="template">Upper Body Strength</div>
+        <button id="save-workout" class="small-button" style="background-color: #28a745; color: white;">Save Workout</button>
+        <button id="cancel-workout" class="cancel-button">Cancel Workout</button>
     </section>
 </div>
 
